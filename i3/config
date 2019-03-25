@@ -1,0 +1,307 @@
+##--------------- Gabriel Moura <develop@srmoura.com.br> -------------------------
+##================================================================================
+##============================TECLAS DE ATALHO====================================
+##================================================================================
+set $alt Mod1
+set $control Control
+set $mod Mod4
+set $tab Tab
+
+##================================================================================
+##=================================FONTE==========================================
+##================================================================================
+font pango:monospace 8
+#font pango:DejaVu Sans Mono 8
+
+##================================================================================
+##=================================ATALHOS========================================
+##================================================================================
+floating_modifier $mod
+
+bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+t exec nautilus
+bindsym $mod+g exec chromium
+bindsym --release Print exec --no-startup-id scrot %Y-%m-%d-%T.png -e 'mv $f ~/Imagens/Screenshots'
+#bindsym $mod+Control+d exec dmenu_run #programas não listados
+bindsym $mod+b exec brave
+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioRaiseVolume exec "amixer set Master 5%+"
+bindsym XF86AudioLowerVolume exec "amixer set Master 5%-"
+bindsym XF86AudioMute exec "amixer set Master 0%"
+
+##================================================================================
+##======================================ROFI======================================
+#=================================================================================
+bindsym $mod+$tab exec --no-startup-id rofi -show window
+bindsym $mod+Control+d exec --no-startup-id rofi -show drun
+bindsym $mod+Control+r exec --no-startup-id rofi -show run
+
+
+##================================================================================
+##==================================SELECT CHAT===================================
+##================================================================================
+set $select_chat Chat (T)ELEGRAM, TO(X)IC, (I)RSSI, (R)ING, (M)ATRIX
+mode "$select_chat" {
+    bindsym t exec --no-startup-id "telegram" , mode "default"
+    bindsym x exec --no-startup-id "qtox", mode "default"
+    bindsym i exec --no-startup-id "xfce4-terminal --title=IRSSI --hide-menubar --hide-toolbar -x irssi", mode "default"
+    bindsym r exec --no-startup-id "gnome-ring", mode "default"
+    bindsym m exec --no-startup-id "riot-web", mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+z mode "$select_chat"
+
+##================================================================================
+##=================================DESLIGAR=======================================
+##================================================================================
+set $mode_system Opções: (L)OCK, LOG(O)UT, (S)USPEND, (H)IBERNATE, (R)EBOOT, SHUT(D)OWN, SHUTDOWN_NOW(Shift+d)
+mode "$mode_system" {
+    bindsym l exec --no-startup-id "i3lock -efbi ~/.config/i3/background.png" , mode "default"
+    bindsym o exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym d exec --no-startup-id "/sbin/shutdown", mode "default"
+    bindsym Shift+d exec --no-startup-id "/sbin/shutdown 0", mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+d mode "$mode_system"
+
+##================================================================================
+##===============================CONTROLE DE VÍDEO================================
+##================================================================================
+set $mode_display Saida Vídeo: (V)GA ON, (H)DMI ON, (X) VGA OFF, (Y) HDMI OFF, (D) Left@HDMI, (A) HDMI@down
+mode "$mode_display" {
+    bindsym v exec --no-startup-id "xrandr --output eDP1 --auto", mode "default"
+    #bindsym h exec --no-startup-id "xrandr --output HDMI-1 --auto --right-of LVDS1", mode "default"
+    #Desliga saida Padrão {{{}}}
+    bindsym x exec --no-startup-id "xrandr --output eDP1 --auto --off", mode "default"
+    #Desliga HDMI
+    bindsym y exec --no-startup-id "xrandr --output HDMI1 --auto --off", mode "default"
+    #Copia saida padrão para HDMI
+    bindsym h exec --no-startup-id "xrandr --output HDMI1 --auto", mode "default"
+    #Saida HDMI a esquerda em paralelo
+    bindsym d exec --no-startup-id "xrandr --output eDP1  --left-of HDMI1", mode "default"
+    #Saida HDMI abaixo, sem desconfigurar eDP1
+    bindsym a exec --n--startup-id "xrandr --output HDMI1  --auto --panning 1360x768+0+768 --right-of eDP1", mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+#Setando o desktop 10 como o do HTMI-1
+workspace 10 output HDMI1
+# Declare here the shortcut to bring the display selection menu
+bindsym $mod+x mode "$mode_display"
+
+##================================================================================
+##=========================CONTROLE DE CLARIDADE==================================
+##================================================================================
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5 #~/.config/i3/brightness.sh -inc 20
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5 #~/.config/i3/brightness.sh -dec 20
+
+##================================================================================
+##==============================COMANDOS BÁSICOS==================================
+##================================================================================
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop  #Inicia o dmenu
+
+##================================================================================
+##=================================== Foco =======================================
+##================================================================================
+
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+bindsym $mod+c focus child
+
+##================================================================================
+##================================ WorkSpace =====================================
+##================================================================================
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+##================================================================================
+##================================ WorkSpace =====================================
+##================================================================================
+# Setando WorkSpace
+set $w01 1
+set $w02 2
+set $w03 3
+set $w04 4
+set $w05 5
+set $w06 6
+set $w07 7
+set $w08 8
+set $w09 9
+set $w10 10
+set $w11 Private
+# switch to workspace
+bindsym $mod+1 workspace $w01
+bindsym $mod+2 workspace $w02
+bindsym $mod+3 workspace $w03
+bindsym $mod+4 workspace $w04
+bindsym $mod+5 workspace $w05
+bindsym $mod+6 workspace $w06
+bindsym $mod+7 workspace $w07
+bindsym $mod+8 workspace $w08
+bindsym $mod+9 workspace $w09
+bindsym $mod+0 workspace $w10
+bindsym $mod+p workspace $w11
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $w01
+bindsym $mod+Shift+2 move container to workspace $w02
+bindsym $mod+Shift+3 move container to workspace $w03
+bindsym $mod+Shift+4 move container to workspace $w04
+bindsym $mod+Shift+5 move container to workspace $w05
+bindsym $mod+Shift+6 move container to workspace $w06
+bindsym $mod+Shift+7 move container to workspace $w07
+bindsym $mod+Shift+8 move container to workspace $w08
+bindsym $mod+Shift+9 move container to workspace $w09
+bindsym $mod+Shift+0 move container to workspace $w10
+bindsym $mod+Shift+p move container to workspace $w11
+
+#Padrão de onde será aberto
+#assign [class="(?i)chromium"]  $w10
+
+
+
+
+##================================================================================
+##============================MODO RECIZER========================================
+##================================================================================
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+##================================================================================
+##===================================BARRA========================================
+##================================================================================
+bar {
+        #status_command i3status
+        output HDMI1
+        output eDP1
+        tray_output eDP1 #saida de icones
+        status_command i3blocks -c ~/.config/i3/_i3blocks.conf
+        position top
+        font pango:Terminus,Icons 11.5
+        colors {
+          separator #dc322f
+          background #002b36
+          statusline #268bd2
+          focused_workspace #fdf6e3 #859900 #fdf6e3
+          active_workspace #fdf6e3 #6c71c4 #fdf6e3
+          inactive_workspace #586e75 #93a1a1 #002b36
+  }
+}
+
+##================================================================================
+##================================{{TEMA}}========================================
+##================================================================================
+## É feito o uso do lxappearance para gerenciar os temas por ser leve e funcional.
+client.background       #161616
+client.focused #859900 #859900 #fdf6e3 #6c71c4
+client.focused_inactive #073642 #073642 #eee8d5 #6c71c4
+client.unfocused #073642 #073642 #93a1a1 #586e75
+client.urgent #d33682 #d33682 #fdf6e3 #dc322f
+for_window [class="Nitrogen"] floating enable #sticky enable border normal
+for_window [class="Vlc"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="pavucontrol"] floating enable
+for_window [class="nm-connection-editor"] floating enable
+##================================================================================
+##==========================INICIAR JUNTO AO I3===================================
+##================================================================================
+exec --no-startup-id nitrogen --restore --set-auto #Gerenciador de plano de fundo.
+exec --no-startup-id nm-applet --pause 5 #Gerenciador de Rede.
+exec --no-startup-id parcellite --pause 4 #Gerenciador da área de trandefencia.
+exec --no-startup-id volumeicon-alsa --pause 5 #Gerenciador de volume.
+exec --no-startup-id setxkbmap -model abnt -layout br -variant ,abnt
+exec --no-startup-id blueman-applet
+
+##================================================================================
+#exec_always xrandr --output eDP1 primary
+#exec_always xrandr --output eDP1 --left-of VGA-1
